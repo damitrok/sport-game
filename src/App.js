@@ -4,6 +4,7 @@ import Home from "./pages/Home";
 import NavBar from "./components/NavBar";
 import Workouts from "./pages/Workouts";
 import AddWorkout from "./pages/AddWorkout";
+import StartPage from "./pages/StartPage";
 import { lightTheme, darkTheme } from "./styles/theme";
 import { ThemeProvider } from "@mui/material/styles";
 import React, { useState } from "react";
@@ -20,6 +21,7 @@ function App() {
       <Router>
         <NavBar onToggleTheme={toggleTheme} />
         <Routes>
+          <Route path="/start-page" element={<StartPage />} />
           <Route path="/" element={<Home />} />
           <Route path="/workouts" element={<Workouts />} />
           <Route path="/add-workout" element={<AddWorkout />} />
