@@ -1,68 +1,75 @@
 import React from "react";
 import {
   Box,
-  Typography,
   Container,
   CssBaseline,
   Grid,
   Card,
-  CardMedia,
-  CardContent,
+  Typography,
+  styled,
 } from "../utils/muiComponents";
 import ClassList from "../data";
+
+const StyledCard = styled(Card)(({ theme }) => ({
+  borderRadius: "15px",
+  overflow: "hidden",
+  cursor: "pointer",
+  transition: "transform 0.3s ease, box-shadow 0.3s ease",
+  "&:hover": {
+    transform: "scale(1.05)",
+    boxShadow: `0 4px 10px ${theme.palette.primary.main}`,
+  },
+}));
+
+const handleCardClick = (id) => {
+  console.log(`Clicked on card with id: ${id}`);
+};
 
 const ChoosingClass = () => {
   return (
     <div>
       <Container component="main" maxWidth="lg">
         <CssBaseline />
-
+        <Typography
+          variant="h4"
+          align="center"
+          gutterBottom
+          color="theme.palette.primary.secondary"
+        >
+          Выберете класс для старта
+        </Typography>
         <Box sx={{ my: 4 }}>
           <Grid container spacing={4}>
-            {/* {classList.map((class) => (
-              <Grid item key={index} xs={12} sm={6} md={4}>
-                <Card>
-                  <CardMedia
-                    component="img"
-                    alt={`Card image ${index + 1}`}
-                    height="140"
-                    image={`https://source.unsplash.com/random?sig=${index}`}
-                  />
-                  <CardContent>
-                    <Typography gutterBottom variant="h5" component="div">
-                      Card Title {index + 1}
-                    </Typography>
-                    <Typography variant="body2" color="text.secondary">
-                      This is a description of the card content. You can include
-                      any relevant information here.
-                    </Typography>
-                  </CardContent>
-                </Card>
-              </Grid>
-            )) */}
             {ClassList.map((sportClass) => (
-              <div
-                key={sportClass.id}
-                style={{
-                  textAlign: "center",
-                  border: "1px solid #ccc",
-                  padding: "10px",
-                  borderRadius: "8px",
-                }}
-              >
-                <img
-                  src={sportClass.img}
-                  alt={sportClass.nameEn}
-                  style={{
-                    width: "100px",
-                    height: "100px",
-                    objectFit: "cover",
-                    borderRadius: "50%",
-                  }}
-                />
-                <h3>{sportClass.nameEn}</h3>
-                <p>{sportClass.nameRu}</p>
-              </div>
+              <Grid item key={sportClass.id} xs={12} sm={6} md={3}>
+                <StyledCard onClick={() => handleCardClick(sportClass.id)}>
+                  <Box
+                    sx={{
+                      height: 240,
+                      position: "relative",
+                      backgroundImage: `url(${sportClass.img})`,
+                      backgroundSize: "cover",
+                      backgroundPosition: "center",
+                      borderRadius: "8px",
+                    }}
+                  >
+                    <Typography
+                      variant="h6"
+                      sx={{
+                        position: "absolute",
+                        bottom: 10,
+                        left: 10,
+                        color: "#fff",
+                        backgroundColor: "rgba(0, 0, 0, 0.6)",
+                        padding: "5px 10px",
+                        borderRadius: "4px",
+                      }}
+                    >
+                      {sportClass.nameRu}
+                    </Typography>
+                  </Box>
+                </StyledCard>
+              </Grid>
             ))}
           </Grid>
         </Box>
