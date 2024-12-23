@@ -15,6 +15,9 @@ import {
   MenuIcon,
 } from "../utils/muiComponents";
 
+import { signOut } from "firebase/auth";
+import { auth } from "../firebaseConfig";
+
 const StyledLink = styled(Link)({
   textDecoration: "none",
   color: "inherit",
@@ -26,6 +29,11 @@ const NavBar = ({ onToggleTheme }) => {
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
+  };
+
+  const handleLogout = async () => {
+    await signOut(auth);
+    console.log("Logged out!");
   };
 
   const drawerContent = (
@@ -78,6 +86,9 @@ const NavBar = ({ onToggleTheme }) => {
           </Box>
           <Button color="inherit" onClick={onToggleTheme}>
             Сменить тему
+          </Button>
+          <Button color="inherit" onClick={handleLogout}>
+            Выйти
           </Button>
         </Toolbar>
       </AppBar>
