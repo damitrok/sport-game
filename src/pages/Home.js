@@ -1,4 +1,6 @@
 import React from "react";
+import { useSelector } from "react-redux";
+
 import {
   Box,
   Typography,
@@ -6,11 +8,14 @@ import {
   CssBaseline,
   Grid,
   Card,
-  CardMedia,
   CardContent,
 } from "../utils/muiComponents";
 
 const Home = () => {
+  const user = useSelector((state) => state.user.data);
+  console.log("user: ", user);
+  const loading = useSelector((state) => state.user.loading);
+  console.log("loading: ", loading);
   return (
     <Container component="main" maxWidth="lg">
       <CssBaseline />
@@ -25,27 +30,9 @@ const Home = () => {
         </Typography>
 
         <Grid container spacing={4}>
-          {Array.from(Array(6)).map((_, index) => (
-            <Grid item key={index} xs={12} sm={6} md={4}>
-              <Card>
-                <CardMedia
-                  component="img"
-                  alt={`Card image ${index + 1}`}
-                  height="140"
-                  image={`https://source.unsplash.com/random?sig=${index}`}
-                />
-                <CardContent>
-                  <Typography gutterBottom variant="h5" component="div">
-                    Card Title {index + 1}
-                  </Typography>
-                  <Typography variant="body2" color="text.secondary">
-                    This is a description of the card content. You can include
-                    any relevant information here.
-                  </Typography>
-                </CardContent>
-              </Card>
-            </Grid>
-          ))}
+          <Card>
+            <CardContent></CardContent>
+          </Card>
         </Grid>
       </Box>
     </Container>

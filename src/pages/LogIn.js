@@ -3,7 +3,8 @@ import {
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
 } from "firebase/auth";
-import { auth } from "../firebaseConfig";
+import { doc, setDoc } from "firebase/firestore";
+import { auth, db } from "../firebaseConfig";
 import { TextField, Button, Typography, Box, Alert } from "@mui/material";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useNavigate } from "react-router-dom";
@@ -16,7 +17,6 @@ const LoginPage = () => {
   const handleLogin = async () => {
     try {
       await signInWithEmailAndPassword(auth, email, password);
-      // Успешный вход
       Alert("Logged in!");
     } catch (err) {
       setError(err.message);
@@ -26,10 +26,15 @@ const LoginPage = () => {
   const handleSignUp = async (e) => {
     e.preventDefault();
     try {
-      await createUserWithEmailAndPassword(auth, email, password);
-      navigate("/"); // Перенаправляем на главную страницу после успешной регистрации
+      const { user } = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+      await createUserDocument(user);
+      navigate("/start-page");
     } catch (err) {
-      setError(err.message); // Показываем ошибку
+      setError(err.message);
     }
   };
 
@@ -41,6 +46,27 @@ const LoginPage = () => {
       navigate("/start-page");
     }
   }, [user, navigate]);
+
+  const createUserDocument = async (user) => {
+    if (!user) return;
+
+    try {
+      const userDocRef = doc(db, "users", user.uid);
+      await setDoc(userDocRef, {
+        email: user.email,
+        level: 1,
+        xp: 0,
+        class: 0,
+        progress: {
+          totalWorkouts: 0,
+          completedWorkouts: 0,
+          workoutHistory: {},
+        },
+      });
+    } catch (error) {
+      Alert("Ошибка при создании пользователя в Firestore:", error);
+    }
+  };
 
   return (
     <Box
